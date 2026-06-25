@@ -405,9 +405,9 @@ namespace LauncherZ.Views
         {
             var dialog = new Microsoft.Win32.OpenFileDialog
             {
-                Title = "Select DayZ.exe",
-                Filter = "DayZ Executable|DayZ.exe",
-                FileName = "DayZ.exe"
+                Title = "Select DayZ_x64.exe",
+                Filter = "DayZ Executable|DayZ_x64.exe",
+                FileName = "DayZ_x64.exe"
             };
             if (dialog.ShowDialog() == true)
             {
