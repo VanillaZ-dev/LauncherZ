@@ -46,5 +46,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: LauncherZ_Setup
-          path: LauncherZ_Setup.exe
+          path: LauncherZ/LauncherZ_Setup.exe
           retention-days: 90
