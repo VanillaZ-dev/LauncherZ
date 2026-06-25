@@ -183,7 +183,7 @@ namespace LauncherZ.Services
         private static async Task<List<IPEndPoint>> GetMasterListAsync(CancellationToken ct)
         {
             var list = new List<IPEndPoint>();
-            string[] hosts = { "hl2master.steambutter.com", "208.64.200.65", "208.64.200.52" };
+            string[] hosts = { "hl2master.steampowered.com", "208.64.200.65", "208.64.200.52" };
 
             foreach (var host in hosts)
             {
