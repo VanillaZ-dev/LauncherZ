@@ -1,0 +1,46 @@
+name: Build & Package LauncherZ
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore LauncherZ/LauncherZ/LauncherZ.csproj
+
+      - name: Publish self-contained exe
+        run: |
+          dotnet publish LauncherZ/LauncherZ/LauncherZ.csproj `
+            --configuration Release `
+            --runtime win-x64 `
+            --self-contained true `
+            -p:PublishSingleFile=true `
+            -p:IncludeNativeLibrariesForSelfExtract=true `
+            -p:EnableCompressionInSingleFile=true `
+            --output publish
+
+      - name: Install NSIS
+        run: choco install nsis --no-progress -y
+
+      - name: Build installer
+        run: makensis LauncherZ/installer.nsi
+
+      - name: Upload installer artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: LauncherZ_Setup
+          path: LauncherZ_Setup.exe
+          retention-days: 90
