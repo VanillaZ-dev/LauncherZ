@@ -29,7 +29,7 @@ VIAddVersionKey "FileDescription" "LauncherZ - DayZ Launcher"
 Section "LauncherZ" SecMain
     SectionIn RO
     SetOutPath "$INSTDIR"
-    File "publish\LauncherZ.exe"
+    File "LauncherZ.exe"
 
     WriteRegStr HKLM "Software\LauncherZ" "InstallPath" "$INSTDIR"
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\LauncherZ" "DisplayName" "LauncherZ"
