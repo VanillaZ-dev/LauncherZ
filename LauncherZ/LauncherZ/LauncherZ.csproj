@@ -13,13 +13,11 @@
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
     <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
-    <ApplicationIcon>Resources\icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\icon.ico" Condition="Exists('Resources\icon.ico')"/>
     <Resource Include="Resources\logo.png" Condition="Exists('Resources\logo.png')"/>
   </ItemGroup>
 </Project>
