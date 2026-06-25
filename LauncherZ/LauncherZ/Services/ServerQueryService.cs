@@ -202,7 +202,7 @@ namespace LauncherZ.Services
                         // addr contains IP only, gameport contains the query port
                         string ipStr = srv.Addr.Contains(':') ? srv.Addr.Split(':')[0] : srv.Addr;
                         if (!IPAddress.TryParse(ipStr, out var ip)) continue;
-                        int port = srv.GamePort > 0 ? srv.GamePort : 2302;
+                        int port = srv.GamePort > 0 ? srv.GamePort + 1 : 2303;
                         list.Add(new IPEndPoint(ip, port));
                     }
                 }
