@@ -57,7 +57,7 @@ namespace LauncherZ.Views
         {
             if (v is ServerInfo s)
             {
-                string key = s.IsOfficial ? "TagOffBgBrush" : s.IsVanilla ? "TagVanBgBrush" : "TagModBgBrush";
+                string key = s.IsOfficial ? "TagOffBgBrush" : "TagModBgBrush";
                 return Application.Current.Resources[key] as Brush ?? Brushes.Transparent;
             }
             return Brushes.Transparent;
@@ -71,7 +71,7 @@ namespace LauncherZ.Views
         {
             if (v is ServerInfo s)
             {
-                string key = s.IsOfficial ? "TagOffBdrBrush" : s.IsVanilla ? "TagVanBdrBrush" : "TagModBdrBrush";
+                string key = s.IsOfficial ? "TagOffBdrBrush" : "TagModBdrBrush";
                 return Application.Current.Resources[key] as Brush ?? Brushes.Transparent;
             }
             return Brushes.Transparent;
@@ -85,7 +85,7 @@ namespace LauncherZ.Views
         {
             if (v is ServerInfo s)
             {
-                string key = s.IsOfficial ? "TagOffTxtBrush" : s.IsVanilla ? "TagVanTxtBrush" : "TagModTxtBrush";
+                string key = s.IsOfficial ? "TagOffTxtBrush" : "TagModTxtBrush";
                 return Application.Current.Resources[key] as Brush ?? Brushes.White;
             }
             return Brushes.White;
@@ -98,7 +98,7 @@ namespace LauncherZ.Views
         public object Convert(object v, Type t, object p, CultureInfo c)
         {
             if (v is ServerInfo s)
-                return s.IsOfficial ? "OFFICIAL" : s.IsVanilla ? "VANILLA" : $"{s.ModCount} MODS";
+                return s.IsOfficial ? "OFFICIAL" : "COMMUNITY";
             return string.Empty;
         }
         public object ConvertBack(object v, Type t, object p, CultureInfo c) => DependencyProperty.UnsetValue;
