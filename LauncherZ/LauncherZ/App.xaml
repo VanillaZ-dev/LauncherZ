@@ -1,0 +1,76 @@
+<Application x:Class="LauncherZ.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             StartupUri="Views/MainWindow.xaml">
+    <Application.Resources>
+        <Color x:Key="BgRoot">#0d1210</Color>
+        <Color x:Key="BgPanel">#161e1a</Color>
+        <Color x:Key="BgRaised">#1c2822</Color>
+        <Color x:Key="BgHover">#20302a</Color>
+        <Color x:Key="BgSelected">#152218</Color>
+        <Color x:Key="Border">#233028</Color>
+        <Color x:Key="BorderLit">#2e4038</Color>
+        <Color x:Key="Accent">#39ff6a</Color>
+        <Color x:Key="AccentDim">#2239ff6a</Color>
+        <Color x:Key="ConnectBtn">#bf5936</Color>
+        <Color x:Key="ConnectBtnH">#d96840</Color>
+        <Color x:Key="TextPrimary">#e8e2da</Color>
+        <Color x:Key="TextSecond">#a8b8b0</Color>
+        <Color x:Key="TextDim">#607068</Color>
+        <Color x:Key="TextVeryDim">#384840</Color>
+        <Color x:Key="TabActiveBg">#253c2e</Color>
+        <Color x:Key="TabActiveTxt">#ffffff</Color>
+        <Color x:Key="TabInactBg">#1a2620</Color>
+        <Color x:Key="TabInactTxt">#a0b4a8</Color>
+        <Color x:Key="PingGood">#38a858</Color>
+        <Color x:Key="PingMid">#b89030</Color>
+        <Color x:Key="PingBad">#c04040</Color>
+        <Color x:Key="QueueColor">#22d4e8</Color>
+        <Color x:Key="TagOffTxt">#7ac4e8</Color>
+        <Color x:Key="TagVanTxt">#5edd80</Color>
+        <Color x:Key="TagModTxt">#b09ae0</Color>
+        <Color x:Key="TagOffBg">#1e7ac4e8</Color>
+        <Color x:Key="TagVanBg">#1e5edd80</Color>
+        <Color x:Key="TagModBg">#1eb09ae0</Color>
+        <Color x:Key="TagOffBdr">#597ac4e8</Color>
+        <Color x:Key="TagVanBdr">#595edd80</Color>
+        <Color x:Key="TagModBdr">#59b09ae0</Color>
+
+        <SolidColorBrush x:Key="BgRootBrush"      Color="{StaticResource BgRoot}"/>
+        <SolidColorBrush x:Key="BgPanelBrush"     Color="{StaticResource BgPanel}"/>
+        <SolidColorBrush x:Key="BgRaisedBrush"    Color="{StaticResource BgRaised}"/>
+        <SolidColorBrush x:Key="BgHoverBrush"     Color="{StaticResource BgHover}"/>
+        <SolidColorBrush x:Key="BgSelectedBrush"  Color="{StaticResource BgSelected}"/>
+        <SolidColorBrush x:Key="BorderBrush"      Color="{StaticResource Border}"/>
+        <SolidColorBrush x:Key="BorderLitBrush"   Color="{StaticResource BorderLit}"/>
+        <SolidColorBrush x:Key="AccentBrush"      Color="{StaticResource Accent}"/>
+        <SolidColorBrush x:Key="AccentDimBrush"   Color="{StaticResource AccentDim}"/>
+        <SolidColorBrush x:Key="ConnectBtnBrush"  Color="{StaticResource ConnectBtn}"/>
+        <SolidColorBrush x:Key="ConnectBtnHBrush" Color="{StaticResource ConnectBtnH}"/>
+        <SolidColorBrush x:Key="TextPrimaryBrush" Color="{StaticResource TextPrimary}"/>
+        <SolidColorBrush x:Key="TextSecondBrush"  Color="{StaticResource TextSecond}"/>
+        <SolidColorBrush x:Key="TextDimBrush"     Color="{StaticResource TextDim}"/>
+        <SolidColorBrush x:Key="TextVeryDimBrush" Color="{StaticResource TextVeryDim}"/>
+        <SolidColorBrush x:Key="TabActiveBgBrush" Color="{StaticResource TabActiveBg}"/>
+        <SolidColorBrush x:Key="TabActiveTxtBrush"Color="{StaticResource TabActiveTxt}"/>
+        <SolidColorBrush x:Key="TabInactBgBrush"  Color="{StaticResource TabInactBg}"/>
+        <SolidColorBrush x:Key="TabInactTxtBrush" Color="{StaticResource TabInactTxt}"/>
+        <SolidColorBrush x:Key="PingGoodBrush"    Color="{StaticResource PingGood}"/>
+        <SolidColorBrush x:Key="PingMidBrush"     Color="{StaticResource PingMid}"/>
+        <SolidColorBrush x:Key="PingBadBrush"     Color="{StaticResource PingBad}"/>
+        <SolidColorBrush x:Key="QueueColorBrush"  Color="{StaticResource QueueColor}"/>
+        <SolidColorBrush x:Key="TagOffTxtBrush"   Color="{StaticResource TagOffTxt}"/>
+        <SolidColorBrush x:Key="TagVanTxtBrush"   Color="{StaticResource TagVanTxt}"/>
+        <SolidColorBrush x:Key="TagModTxtBrush"   Color="{StaticResource TagModTxt}"/>
+        <SolidColorBrush x:Key="TagOffBgBrush"    Color="{StaticResource TagOffBg}"/>
+        <SolidColorBrush x:Key="TagVanBgBrush"    Color="{StaticResource TagVanBg}"/>
+        <SolidColorBrush x:Key="TagModBgBrush"    Color="{StaticResource TagModBg}"/>
+        <SolidColorBrush x:Key="TagOffBdrBrush"   Color="{StaticResource TagOffBdr}"/>
+        <SolidColorBrush x:Key="TagVanBdrBrush"   Color="{StaticResource TagVanBdr}"/>
+        <SolidColorBrush x:Key="TagModBdrBrush"   Color="{StaticResource TagModBdr}"/>
+
+        <FontFamily x:Key="MonoFont">Consolas, Courier New</FontFamily>
+        <FontFamily x:Key="UIFont">Segoe UI, Arial</FontFamily>
+        <FontFamily x:Key="DisplayFont">Segoe UI Semibold, Arial</FontFamily>
+    </Application.Resources>
+</Application>
