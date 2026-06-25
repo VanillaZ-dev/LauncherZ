@@ -38,9 +38,6 @@ namespace LauncherZ.ViewModels
         private bool _filterNoQueue;
         public bool FilterNoQueue { get => _filterNoQueue; set { _filterNoQueue = value; OnPC(); ServerView.Refresh(); } }
 
-        private bool _filterVanilla;
-        public bool FilterVanillaOnly { get => _filterVanilla; set { _filterVanilla = value; OnPC(); ServerView.Refresh(); } }
-
         private bool _filterFP;
         public bool FilterFirstPerson { get => _filterFP; set { _filterFP = value; OnPC(); ServerView.Refresh(); } }
 
@@ -185,7 +182,6 @@ namespace LauncherZ.ViewModels
                     return false;
             }
             if (_filterNoQueue && s.QueueCount > 0) return false;
-            if (_filterVanilla && !s.IsVanilla && !s.IsOfficial) return false;
             if (_filterFP && !s.IsFirstPerson) return false;
             if (!string.IsNullOrEmpty(_filterMap) &&
                 !s.Map.Equals(_filterMap, StringComparison.OrdinalIgnoreCase)) return false;
