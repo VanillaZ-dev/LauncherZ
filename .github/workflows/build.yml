@@ -36,7 +36,9 @@ jobs:
         run: choco install nsis --no-progress -y
 
       - name: Build installer
-        run: makensis LauncherZ/installer.nsi
+        run: |
+          $env:PATH += ";C:\Program Files (x86)\NSIS"
+          makensis LauncherZ/installer.nsi
 
       - name: Upload installer artifact
         uses: actions/upload-artifact@v4
