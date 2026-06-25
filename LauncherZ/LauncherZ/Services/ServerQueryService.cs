@@ -100,7 +100,7 @@ namespace LauncherZ.Services
                 string gameDir = ReadStr(data, ref pos);
                 ReadStr(data, ref pos);
                 if (pos + 2 > data.Length) return null;
-                short appId = BitConverter.ToInt16(data, pos); pos += 2;
+                int appId = BitConverter.ToUInt16(data, pos); pos += 2;
                 if (appId != DayZAppId) return null;
                 int players    = data[pos++];
                 int maxPlayers = data[pos++];
