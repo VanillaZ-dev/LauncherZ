@@ -193,7 +193,7 @@ namespace LauncherZ.Services
             {
                 int start = 0;
                 const int batchSize = 20000;
-                string url = $"https://api.steampowered.com/IGameServersService/GetServerList/v1/?filter=\\appid\\{DayZAppId}&limit=20000&key=YOURKEYHERE";
+                string url = $"https://api.steampowered.com/IGameServersService/GetServerList/v1/?filter=\\appid\\{DayZAppId}&limit=20000&key=8E94265A3BBAD8CBDC1CA7ADB093FCB4";
 
                 var response = await Http.GetStringAsync(url, ct);
                 var json = JsonConvert.DeserializeObject<SteamServerListResponse>(response);
