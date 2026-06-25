@@ -17,6 +17,7 @@ namespace LauncherZ.Services
         private const int TimeoutMs = 2000;
         private const int DayZAppId = 221100;
         private static readonly HttpClient Http = new() { Timeout = TimeSpan.FromSeconds(30) };
+        private const string SteamApiKey = "8E94265A3BBAD8CBDC1CA7ADB093FCB4";
 
         private static readonly byte[] A2SInfo =
         {
@@ -33,9 +34,6 @@ namespace LauncherZ.Services
             "185.60.","162.254.","216.52.","192.223.","103.28.",
             "209.222.","146.66.","155.133.","205.196."
         };
-
-        // Replace with your Steam Web API key
-        private const string SteamApiKey = "8E94265A3BBAD8CBDC1CA7ADB093FCB4";
 
         public async IAsyncEnumerable<ServerInfo> QueryAllServersAsync(
             IProgress<(int validated, int total)>? progress = null,
@@ -199,10 +197,10 @@ namespace LauncherZ.Services
                     foreach (var srv in json.Response.Servers)
                     {
                         if (string.IsNullOrEmpty(srv.Addr)) continue;
-                        // addr contains IP only, gameport contains the query port
-                        string ipStr = srv.Addr.Contains(':') ? srv.Addr.Split(':')[0] : srv.Addr;
-                        if (!IPAddress.TryParse(ipStr, out var ip)) continue;
-                        int port = srv.GamePort > 0 ? srv.GamePort + 1 : 2303;
+                        var parts = srv.Addr.Split(':');
+                        if (parts.Length != 2) continue;
+                        if (!IPAddress.TryParse(parts[0], out var ip)) continue;
+                        if (!int.TryParse(parts[1], out var port)) continue;
                         list.Add(new IPEndPoint(ip, port));
                     }
                 }
