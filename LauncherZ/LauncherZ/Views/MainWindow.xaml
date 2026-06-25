@@ -362,9 +362,6 @@
                             </StackPanel>
                         </Border>
                         <ToggleButton DockPanel.Dock="Left" Style="{StaticResource ChipBtn}"
-                                      Content="No Queue" Margin="0,0,6,0"
-                                      IsChecked="{Binding FilterNoQueue}"/>
-                        <ToggleButton DockPanel.Dock="Left" Style="{StaticResource ChipBtn}"
                                       Content="Vanilla Only" Margin="0,0,6,0"
                                       IsChecked="{Binding FilterVanillaOnly}"/>
                         <ToggleButton DockPanel.Dock="Left" Style="{StaticResource ChipBtn}"
