@@ -40,7 +40,7 @@ jobs:
           $env:PATH += ";C:\Program Files (x86)\NSIS"
           Copy-Item "${{ github.workspace }}\staging\LauncherZ.exe" "${{ github.workspace }}\LauncherZ\LauncherZ.exe" -Force
           Get-ChildItem "${{ github.workspace }}\LauncherZ"
-          Copy-Item "${{ github.workspace }}\LauncherZ\LauncherZ\LauncherZ\Resources\icon.ico" "${{ github.workspace }}\LauncherZ\LauncherZ\LauncherZ\icon.ico" -Force
+          Copy-Item "${{ github.workspace }}\LauncherZ\LauncherZ\Resources\icon.ico" "${{ github.workspace }}\LauncherZ\LauncherZ\LauncherZ\icon.ico" -Force
           makensis "${{ github.workspace }}\LauncherZ\installer.nsi"
 
       - name: Upload installer artifact
