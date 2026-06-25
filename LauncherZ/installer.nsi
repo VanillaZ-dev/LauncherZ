@@ -42,8 +42,9 @@ Section "LauncherZ" SecMain
 
     WriteUninstaller "$INSTDIR\Uninstall.exe"
     CreateDirectory "$SMPROGRAMS\LauncherZ"
-    CreateShortcut "$SMPROGRAMS\LauncherZ\LauncherZ.lnk" "$INSTDIR\LauncherZ.exe"
-    CreateShortcut "$DESKTOP\LauncherZ.lnk" "$INSTDIR\LauncherZ.exe"
+    File "icon.ico"
+    CreateShortcut "$SMPROGRAMS\LauncherZ\LauncherZ.lnk" "$INSTDIR\LauncherZ.exe" "" "$INSTDIR\icon.ico"
+    CreateShortcut "$DESKTOP\LauncherZ.lnk" "$INSTDIR\LauncherZ.exe" "" "$INSTDIR\icon.ico"
 SectionEnd
 
 Section "Uninstall"
