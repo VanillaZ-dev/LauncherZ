@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 
 namespace LauncherZ.Models
@@ -22,21 +21,11 @@ namespace LauncherZ.Models
         public bool IsFavorite { get; set; }
         public bool IsRecent { get; set; }
         public List<string> Mods { get; set; } = new();
-
-        public bool IsVanilla => !IsOfficial && Mods.All(m => AdminMods.Contains(m));
-        public bool IsModded  => !IsOfficial && Mods.Any(m => !AdminMods.Contains(m));
-        public int  ModCount  => Mods.Count(m => !AdminMods.Contains(m));
+        public bool IsModded => Mods.Count > 0;
+        public int ModCount => Mods.Count;
 
         public string Address => EndPoint != null
             ? $"{EndPoint.Address}:{EndPoint.Port}"
             : string.Empty;
-
-        public static readonly System.Collections.Generic.HashSet<string> AdminMods =
-            new(System.StringComparer.OrdinalIgnoreCase)
-            {
-                "CF", "CFTools", "CommunityOnlineTools", "VPPAdminTools",
-                "DAMerge", "ServerMonitor", "DayZCodeLock", "Admin Tools",
-                "Community-Online-Tools", "VPP Admin Tools"
-            };
     }
 }
