@@ -19,7 +19,7 @@ namespace LauncherZ.Services
         private static readonly HttpClient Http = new() { Timeout = TimeSpan.FromSeconds(30) };
         private const string SteamApiKey = "8E94265A3BBAD8CBDC1CA7ADB093FCB4";
 
-        private static readonly byte[] A2SInfo =
+        private static readonly byte[] A2SInfoBase =
         {
             0xFF,0xFF,0xFF,0xFF,0x54,
             0x53,0x6F,0x75,0x72,0x63,0x65,0x20,0x45,0x6E,0x67,
@@ -72,7 +72,7 @@ namespace LauncherZ.Services
             try
             {
                 var start = DateTime.UtcNow;
-                var data = await SendUdp(ep, A2SInfo, ct);
+                var data = await SendA2SInfo(ep, ct);
                 if (data == null) return null;
                 int ping = (int)(DateTime.UtcNow - start).TotalMilliseconds;
                 var s = ParseInfo(data, ep, ping);
@@ -80,6 +80,43 @@ namespace LauncherZ.Services
                 var rules = await QueryRules(ep, ct);
                 if (rules != null) ApplyRules(s, rules);
                 return s;
+            }
+            catch { return null; }
+        }
+
+        /// <summary>
+        /// Sends A2S_INFO with challenge support.
+        /// DayZ servers may respond with a challenge (0x41) that must be appended to the request.
+        /// </summary>
+        private async Task<byte[]?> SendA2SInfo(IPEndPoint ep, CancellationToken ct)
+        {
+            using var udp = new UdpClient();
+            udp.Client.ReceiveTimeout = TimeoutMs;
+            udp.Client.SendTimeout = TimeoutMs;
+            try
+            {
+                // Send initial request
+                await udp.SendAsync(A2SInfoBase, A2SInfoBase.Length, ep)
+                         .WaitAsync(TimeSpan.FromMilliseconds(TimeoutMs), ct);
+                var r = await udp.ReceiveAsync(ct).AsTask()
+                                 .WaitAsync(TimeSpan.FromMilliseconds(TimeoutMs), ct);
+                var data = r.Buffer;
+
+                // If challenge response (0x41), append challenge and resend
+                if (data.Length >= 9 && data[4] == 0x41)
+                {
+                    var challenge = new byte[A2SInfoBase.Length + 4];
+                    Array.Copy(A2SInfoBase, challenge, A2SInfoBase.Length);
+                    Array.Copy(data, 5, challenge, A2SInfoBase.Length, 4);
+
+                    await udp.SendAsync(challenge, challenge.Length, ep)
+                             .WaitAsync(TimeSpan.FromMilliseconds(TimeoutMs), ct);
+                    r = await udp.ReceiveAsync(ct).AsTask()
+                                 .WaitAsync(TimeSpan.FromMilliseconds(TimeoutMs), ct);
+                    data = r.Buffer;
+                }
+
+                return data;
             }
             catch { return null; }
         }
@@ -97,18 +134,25 @@ namespace LauncherZ.Services
             try
             {
                 if (data.Length < 6 || data[4] != 0x49) return null;
-                int pos = 6;
+                int pos = 6; // skip header (4) + type (1) + protocol (1)
+
                 string name    = ReadStr(data, ref pos);
                 string map     = ReadStr(data, ref pos);
                 string gameDir = ReadStr(data, ref pos);
-                ReadStr(data, ref pos);
-                if (pos + 2 > data.Length) return null;
-                int appId = BitConverter.ToUInt16(data, pos); pos += 2;
-                if (appId != DayZAppId) return null;
+                ReadStr(data, ref pos); // game description - skip
+
+                // App ID - DayZ returns 0 here because 221100 > 65535
+                // We validate via gameDir instead
+                pos += 2;
+
                 int players    = data[pos++];
                 int maxPlayers = data[pos++];
-                pos++; pos++; pos++;
+                pos++;  // bots
+                pos++;  // server type
+                pos++;  // environment
                 bool pw = data[pos++] == 1;
+                pos++;  // VAC
+                ReadStr(data, ref pos); // version - skip
 
                 string ipStr = ep.Address.ToString();
                 bool official = OfficialSubnets.Any(sub => ipStr.StartsWith(sub, StringComparison.Ordinal));
