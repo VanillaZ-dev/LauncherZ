@@ -14,9 +14,9 @@ namespace LauncherZ.Services
 {
     public class ServerQueryService
     {
-        private const int TimeoutMs = 1500;
+        private const int TimeoutMs = 2000;
         private const int DayZAppId = 221100;
-        private static readonly HttpClient Http = new() { Timeout = TimeSpan.FromSeconds(10) };
+        private static readonly HttpClient Http = new() { Timeout = TimeSpan.FromSeconds(30) };
 
         private static readonly byte[] A2SInfo =
         {
@@ -33,6 +33,9 @@ namespace LauncherZ.Services
             "185.60.","162.254.","216.52.","192.223.","103.28.",
             "209.222.","146.66.","155.133.","205.196."
         };
+
+        // Replace with your Steam Web API key
+        private const string SteamApiKey = "8E94265A3BBAD8CBDC1CA7ADB093FCB4";
 
         public async IAsyncEnumerable<ServerInfo> QueryAllServersAsync(
             IProgress<(int validated, int total)>? progress = null,
@@ -182,39 +185,33 @@ namespace LauncherZ.Services
             return s;
         }
 
-        /// <summary>
-        /// Gets DayZ server list via Steam Web API over HTTPS.
-        /// This avoids UDP firewall issues with direct master server queries.
-        /// </summary>
         private static async Task<List<IPEndPoint>> GetServerListAsync(CancellationToken ct)
         {
             var list = new List<IPEndPoint>();
             try
             {
-                int start = 0;
-                const int batchSize = 20000;
-                string url = $"https://api.steampowered.com/IGameServersService/GetServerList/v1/?filter=%5Cappid%5C{DayZAppId}&limit=20000&key=8E94265A3BBAD8CBDC1CA7ADB093FCB4";
+                string url = $"https://api.steampowered.com/IGameServersService/GetServerList/v1/?filter=\\appid\\{DayZAppId}&limit=20000&key={SteamApiKey}";
+                var resp = await Http.GetStringAsync(url, ct);
+                var json = JsonConvert.DeserializeObject<SteamApiResponse>(resp);
 
-                var response = await Http.GetStringAsync(url, ct);
-                var json = JsonConvert.DeserializeObject<SteamServerListResponse>(response);
-
-                if (json?.Response?.Servers == null) return list;
-
-                foreach (var server in json.Response.Servers)
+                if (json?.Response?.Servers != null && json.Response.Servers.Count > 0)
                 {
-                    if (string.IsNullOrEmpty(server.Addr)) continue;
-                    var parts = server.Addr.Split(':');
-                    if (parts.Length != 2) continue;
-                    if (!IPAddress.TryParse(parts[0], out var ip)) continue;
-                    if (!int.TryParse(parts[1], out var port)) continue;
-                    list.Add(new IPEndPoint(ip, port));
+                    foreach (var srv in json.Response.Servers)
+                    {
+                        if (string.IsNullOrEmpty(srv.Addr)) continue;
+                        // addr contains IP only, gameport contains the query port
+                        string ipStr = srv.Addr.Contains(':') ? srv.Addr.Split(':')[0] : srv.Addr;
+                        if (!IPAddress.TryParse(ipStr, out var ip)) continue;
+                        int port = srv.GamePort > 0 ? srv.GamePort : 2302;
+                        list.Add(new IPEndPoint(ip, port));
+                    }
                 }
             }
-            catch
-            {
-                // Fall back to master server if API fails
+            catch { }
+
+            if (list.Count == 0)
                 list = await GetMasterListAsync(ct);
-            }
+
             return list;
         }
 
@@ -282,22 +279,25 @@ namespace LauncherZ.Services
             return pkt;
         }
 
-        private class SteamServerListResponse
+        private class SteamApiResponse
         {
             [JsonProperty("response")]
-            public SteamServerListInner? Response { get; set; }
+            public SteamApiInner? Response { get; set; }
         }
 
-        private class SteamServerListInner
+        private class SteamApiInner
         {
             [JsonProperty("servers")]
-            public List<SteamServer>? Servers { get; set; }
+            public List<SteamServerEntry>? Servers { get; set; }
         }
 
-        private class SteamServer
+        private class SteamServerEntry
         {
             [JsonProperty("addr")]
             public string? Addr { get; set; }
+
+            [JsonProperty("gameport")]
+            public int GamePort { get; set; }
         }
     }
 }
